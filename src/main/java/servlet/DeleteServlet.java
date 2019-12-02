@@ -2,6 +2,7 @@ package servlet;
 
 import DAO.UserDAOHibernate;
 import DAO.UserDAOJdbc;
+import DAO.UserDaoFactory;
 import service.*;
 
 import javax.servlet.annotation.WebServlet;
@@ -15,8 +16,7 @@ public class DeleteServlet extends HttpServlet {
     private UserService userService;
 
     public void init() {
-//        userService = new UserServiceImpl(new UserDAOJdbc(DBHelper.getInstance().getConnection()));
-        userService = new UserServiceImpl(new UserDAOHibernate(DBHelper.getInstance().getSessionFactory()));
+        userService = new UserServiceImpl(new UserDaoFactory().getUserDAO());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
