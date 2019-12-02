@@ -10,10 +10,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserJdbcDAO implements UserDAO {
+public class UserDAOJdbc implements UserDAO {
     private final Connection connection;
 
-    public UserJdbcDAO(Connection connection) {
+    public UserDAOJdbc(Connection connection) {
         this.connection = connection;
     }
 

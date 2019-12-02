@@ -1,6 +1,7 @@
 package servlet;
 
-import DAO.UserJdbcDAO;
+import DAO.UserDAOHibernate;
+import DAO.UserDAOJdbc;
 import model.User;
 import service.*;
 
@@ -18,8 +19,8 @@ public class UpdateServlet extends HttpServlet {
     private UserService userService;
 
     public void init() {
-        userService = new UserServiceImpl(new UserJdbcDAO(DBHelper.getInstance().getConnection()));
-
+//        userService = new UserServiceImpl(new UserDAOJdbc(DBHelper.getInstance().getConnection()));
+          userService = new UserServiceImpl(new UserDAOHibernate(DBHelper.getInstance().getSessionFactory()));
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
