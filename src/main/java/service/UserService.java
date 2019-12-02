@@ -12,6 +12,10 @@ public interface UserService {
 
     List<User> selectAllUsers();
 
+    List<User> selectNotAdmins();
+
+    User selectUserByRole(String name, String password);
+
     boolean deleteUser(int id);
 
     void updateUser(User user);

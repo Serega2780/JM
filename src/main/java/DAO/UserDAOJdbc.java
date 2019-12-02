@@ -19,7 +19,7 @@ public class UserDAOJdbc implements UserDAO {
 
     @Override
     public void insertUser(User user) throws DBException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user" +
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users" +
                 "  (name, email, country) VALUES (?, ?, ?);")) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getEmail());
@@ -40,15 +40,17 @@ public class UserDAOJdbc implements UserDAO {
     public User selectUser(int id) throws DBException {
         User user = null;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement("select id,name,email,country from " +
-                "user where id =?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select id, name, password, role," +
+                " email,country from users where id =?")) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 String name = rs.getString("name");
+                String password = rs.getString("password");
+                String role = rs.getString("role");
                 String email = rs.getString("email");
                 String country = rs.getString("country");
-                user = new User(id, name, email, country);
+                user = new User(id, name, password, role, email, country);
             }
         } catch (SQLException e) {
             throw new DBException("An error during SELECT User query...");
@@ -60,14 +62,15 @@ public class UserDAOJdbc implements UserDAO {
     public List<User> selectAllUsers() throws DBException {
         List<User> users = new ArrayList<>();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from user")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from users")) {
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
+                String role = rs.getString("role");
                 String email = rs.getString("email");
                 String country = rs.getString("country");
-                users.add(new User(id, name, email, country));
+                users.add(new User(id, name, role, email, country));
             }
         } catch (SQLException e) {
             throw new DBException("An error during SELECT All query...");
@@ -76,9 +79,56 @@ public class UserDAOJdbc implements UserDAO {
     }
 
     @Override
+    public List<User> selectNotAdmins() throws DBException {
+        List<User> users = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from users " +
+                "where role = ?;")) {
+            preparedStatement.setString(1, "user");
+            System.out.println(preparedStatement);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String role = rs.getString("role");
+                String email = rs.getString("email");
+                String country = rs.getString("country");
+                users.add(new User(id, name, role, email, country));
+            }
+        } catch (SQLException e) {
+            throw new DBException("An error during SELECT NOT ADMINS query...");
+        }
+        return users;
+    }
+
+    @Override
+    public User selectUserByRole(String name, String password) throws DBException {
+        User user = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from users " +
+                "where name = ? AND password = ?")) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, password);
+            System.out.println(preparedStatement);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("name");
+                String uName = rs.getString("name");
+                String uPassword = rs.getString("password");
+                String role = rs.getString("role");
+                String email = rs.getString("email");
+                String country = rs.getString("country");
+                user = new User(id, uName, uPassword, role, email, country);
+
+            }
+        } catch (SQLException e) {
+            throw new DBException("An error during SELECT BY ROLE query...");
+        }
+        return user;
+    }
+
+    @Override
     public boolean deleteUser(int id) throws DBException {
         boolean rowDeleted = false;
-        try (PreparedStatement statement = connection.prepareStatement("delete from user where id = ?;")) {
+        try (PreparedStatement statement = connection.prepareStatement("delete from users where id = ?;")) {
             statement.setInt(1, id);
             rowDeleted = statement.executeUpdate() > 0;
             connection.commit();
@@ -95,7 +145,7 @@ public class UserDAOJdbc implements UserDAO {
 
     @Override
     public void updateUser(User user) throws DBException {
-        try (PreparedStatement statement = connection.prepareStatement("update user set name = ?,email= ?, " +
+        try (PreparedStatement statement = connection.prepareStatement("update users set name = ?,email= ?, " +
                 "country =? where id = ?;")) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());

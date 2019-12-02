@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet({"/new", "/insert"})
+@WebServlet({"/admin/new", "/admin/insert"})
 public class CreateServlet extends HttpServlet {
-    private UserService userService;
+    UserService userService;
 
     public void init() {
         userService = new UserServiceImpl(new UserDaoFactory().getUserDAO());
@@ -31,9 +31,11 @@ public class CreateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String name = request.getParameter("name");
+        String password = request.getParameter("password");
+        String role = request.getParameter("role");
         String email = request.getParameter("email");
         String country = request.getParameter("country");
-        User newUser = new User(name, email, country);
+        User newUser = new User(name, password, role, email, country);
         userService.createUser(newUser);
         response.sendRedirect("list");
 

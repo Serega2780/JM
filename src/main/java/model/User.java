@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @Column(name = "id")
@@ -14,26 +14,58 @@ public class User {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "role")
+    private String role = "user";
+
     @Column(name = "email")
     private String email;
 
     @Column(name = "country")
     private String country;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getName().equals(user.getName()) &&
+                password.equals(user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), password);
+    }
+
     public User() {
     }
 
-    public User(String name, String email, String country) {
-        super();
+    public User(String name, String password, String role, String email, String country) {
         this.name = name;
+        this.password = password;
+        this.role = role;
         this.email = email;
         this.country = country;
     }
 
-    public User(int id, String name, String email, String country) {
-        super();
+    public User(int id, String name, String role, String email, String country) {
+
         this.id = id;
         this.name = name;
+        this.role = role;
+        this.email = email;
+        this.country = country;
+    }
+
+    public User(int id, String name, String password, String role, String email, String country) {
+
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.role = role;
         this.email = email;
         this.country = country;
     }
@@ -66,20 +98,23 @@ public class User {
         return country;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public void setCountry(String country) {
         this.country = country;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return Objects.equals(getId(), user.getId());
+    public String getPassword() {
+        return password;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

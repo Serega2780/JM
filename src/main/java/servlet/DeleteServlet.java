@@ -1,7 +1,5 @@
 package servlet;
 
-import DAO.UserDAOHibernate;
-import DAO.UserDAOJdbc;
 import DAO.UserDaoFactory;
 import service.*;
 
@@ -11,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/delete")
+@WebServlet("/admin/delete")
 public class DeleteServlet extends HttpServlet {
     private UserService userService;
 

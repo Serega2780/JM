@@ -44,6 +44,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> selectNotAdmins() {
+        try {
+            return userDAO.selectNotAdmins();
+        } catch (DBException e) {
+            logger.severe(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public User selectUserByRole(String name, String password) {
+        try {
+            return userDAO.selectUserByRole(name, password);
+        } catch (DBException e) {
+            logger.severe(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
     public boolean deleteUser(int id) {
         try {
             return userDAO.deleteUser(id);

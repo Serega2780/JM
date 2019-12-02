@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet({"/edit", "/update"})
+@WebServlet({"/admin/edit", "/admin/update"})
 public class UpdateServlet extends HttpServlet {
     private UserService userService;
 
@@ -36,10 +36,12 @@ public class UpdateServlet extends HttpServlet {
 
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
+        String password = request.getParameter("password");
+        String role = request.getParameter("role");
         String email = request.getParameter("email");
         String country = request.getParameter("country");
 
-        User user = new User(id, name, email, country);
+        User user = new User(id, name, password, role, email, country);
         userService.updateUser(user);
         response.sendRedirect("list");
 

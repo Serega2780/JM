@@ -68,6 +68,45 @@ public class UserDAOHibernate implements UserDAO {
     }
 
     @Override
+    public List<User> selectNotAdmins() throws DBException {
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("FROM User WHERE role = :role");
+        query.setParameter("role", "user");
+        List<User> notAdmins;
+        try {
+            notAdmins = query.list();
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            throw new DBException("An error during select all operation...");
+        } finally {
+            session.close();
+        }
+        return notAdmins;
+    }
+
+    @Override
+    public User selectUserByRole(String name, String password) throws DBException {
+        User user = null;
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("FROM User WHERE name = :name AND password = :password");
+        query.setParameter("name", name);
+        query.setParameter("password", password);
+        try {
+            if (!query.list().isEmpty()) {
+                user = (User) query.list().get(0);
+            }
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            throw new DBException("An error during select by role operation...");
+        } finally {
+            session.close();
+        }
+        return user;
+    }
+
+    @Override
     public boolean deleteUser(int id) throws DBException {
         session = this.sessionFactory.openSession();
         boolean rowDeleted;
