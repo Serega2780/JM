@@ -20,7 +20,6 @@ public class UserListServlet extends HttpServlet {
     private UserService userService;
 
     public void init() {
-
         userService = new UserServiceImpl(new UserDaoFactory().getUserDAO());
     }
 

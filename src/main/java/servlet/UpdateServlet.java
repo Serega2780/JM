@@ -19,6 +19,7 @@ public class UpdateServlet extends HttpServlet {
     private UserService userService;
 
     public void init() {
+
         userService = new UserServiceImpl(new UserDaoFactory().getUserDAO());
     }
 
@@ -26,7 +27,7 @@ public class UpdateServlet extends HttpServlet {
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         User existingUser = userService.selectUser(id);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user-form.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/user-form.jsp");
         request.setAttribute("user", existingUser);
         dispatcher.forward(request, response);
     }

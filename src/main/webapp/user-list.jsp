@@ -21,6 +21,8 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Password</th>
+            <th>Role</th>
             <th>Email</th>
             <th>Country</th>
             <th>Actions</th>
@@ -29,6 +31,8 @@
             <tr>
                 <td>${user.id}</td>
                 <td>${user.name}</td>
+                <td>${user.password}</td>
+                <td>${user.role}</td>
                 <td>${user.email}</td>
                 <td>${user.country}</td>
                 <td>

@@ -20,10 +20,12 @@ public class UserDAOJdbc implements UserDAO {
     @Override
     public void insertUser(User user) throws DBException {
         try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users" +
-                "  (name, email, country) VALUES (?, ?, ?);")) {
+                "  (name, password, role, email, country) VALUES (?, ?, ?, ?, ?);")) {
             preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getCountry());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getRole());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getCountry());
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
@@ -40,8 +42,7 @@ public class UserDAOJdbc implements UserDAO {
     public User selectUser(int id) throws DBException {
         User user = null;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement("select id, name, password, role," +
-                " email,country from users where id =?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from users where id =?;")) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
@@ -62,15 +63,16 @@ public class UserDAOJdbc implements UserDAO {
     public List<User> selectAllUsers() throws DBException {
         List<User> users = new ArrayList<>();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from users")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from users;")) {
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
+                String password = rs.getString("password");
                 String role = rs.getString("role");
                 String email = rs.getString("email");
                 String country = rs.getString("country");
-                users.add(new User(id, name, role, email, country));
+                users.add(new User(id, name, password, role, email, country));
             }
         } catch (SQLException e) {
             throw new DBException("An error during SELECT All query...");
@@ -89,6 +91,7 @@ public class UserDAOJdbc implements UserDAO {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
+                String password = rs.getString("password");
                 String role = rs.getString("role");
                 String email = rs.getString("email");
                 String country = rs.getString("country");
@@ -104,13 +107,13 @@ public class UserDAOJdbc implements UserDAO {
     public User selectUserByRole(String name, String password) throws DBException {
         User user = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement("select * from users " +
-                "where name = ? AND password = ?")) {
+                "where name = ? AND password = ?;")) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, password);
             System.out.println(preparedStatement);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
-                int id = rs.getInt("name");
+                int id = rs.getInt("id");
                 String uName = rs.getString("name");
                 String uPassword = rs.getString("password");
                 String role = rs.getString("role");
@@ -145,12 +148,14 @@ public class UserDAOJdbc implements UserDAO {
 
     @Override
     public void updateUser(User user) throws DBException {
-        try (PreparedStatement statement = connection.prepareStatement("update users set name = ?,email= ?, " +
-                "country =? where id = ?;")) {
+        try (PreparedStatement statement = connection.prepareStatement("update users set name = ?," +
+                "password= ?, role= ?, email= ?, country =? where id = ?;")) {
             statement.setString(1, user.getName());
-            statement.setString(2, user.getEmail());
-            statement.setString(3, user.getCountry());
-            statement.setInt(4, user.getId());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getRole());
+            statement.setString(4, user.getEmail());
+            statement.setString(5, user.getCountry());
+            statement.setInt(6, user.getId());
             statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {

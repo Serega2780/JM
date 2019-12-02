@@ -17,11 +17,11 @@
 </center>
 <div align="center">
     <c:if test="${user != null}">
-    <form action="update" method="post">
-        </c:if>
-        <c:if test="${user == null}">
+        <form action="update" method="post">
+    </c:if>
+    <c:if test="${user == null}">
         <form action="insert" method="post">
-            </c:if>
+    </c:if>
             <table border="1" cellpadding="5">
                 <caption>
                     <h2>
@@ -44,6 +44,24 @@
                         />
                     </td>
                 </tr>
+                <tr>
+                <tr>
+                    <th>Password:</th>
+                    <td>
+                        <input type="password" name="password" size="45"
+                               value="<c:out value="${user.password}" />"
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Role:</th>
+                    <td>
+                        <input type="text" name="role" size="45"
+                               value="<c:out value="${user.role}" />"
+                        />
+                    </td>
+                </tr>
+                <tr>
                 <tr>
                     <th>User Email:</th>
                     <td>
