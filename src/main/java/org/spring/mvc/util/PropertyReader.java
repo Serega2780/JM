@@ -1,4 +1,4 @@
-package util;
+package org.spring.mvc.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ public class PropertyReader {
     private static final String fileName = "Dao.properties";
     private static Properties properties;
 
-    final static Logger logger = Logger.getLogger(PropertyReader.class.getName());
+    private final static Logger logger = Logger.getLogger(PropertyReader.class.getName());
 
     public static String getProperty(String propertyName) {
         if (properties == null) {
