@@ -11,7 +11,7 @@
 <head>
     <body>
     <title>Login</title>
-    <form action="login" method="post">
+    <form action="login" method="get">
         Login:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="login"/><br/><br/>
         Password:&nbsp;&nbsp;&nbsp;<input type="password" name="password"/><br/><br/>
         <input type="submit" value="login"/>

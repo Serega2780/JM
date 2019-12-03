@@ -22,6 +22,8 @@
     <taglibs-standard.version>1.1.2</taglibs-standard.version>
     <servlet-api.version>4.0.1</servlet-api.version>
     <jsp-api.version>2.3.3</jsp-api.version>
+    <hibernate.version>5.4.9.Final</hibernate.version>
+    <mysql.mysql-connector-java.version>8.0.18</mysql.mysql-connector-java.version>
 
   </properties>
 
@@ -69,6 +71,43 @@
       <version>${jsp-api.version}</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.1.0.Final</version>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>5.2.1.RELEASE</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql.mysql-connector-java.version}</version>
+    </dependency>
+
+
   </dependencies>
 
   <build>
