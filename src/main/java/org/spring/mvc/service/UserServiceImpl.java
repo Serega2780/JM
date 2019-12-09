@@ -1,6 +1,7 @@
 package org.spring.mvc.service;
 
 import org.spring.mvc.dao.UserDao;
+import org.spring.mvc.dao.UserDaoFactory;
 import org.spring.mvc.domain.User;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,9 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
 
-    @Resource(name = "userDao")
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
+    @Resource(name = "userDaoFactory")
+    public void setUserDao(UserDaoFactory userDaoFactory) {
+        this.userDao = userDaoFactory.getUserDao();
     }
 
     @Override

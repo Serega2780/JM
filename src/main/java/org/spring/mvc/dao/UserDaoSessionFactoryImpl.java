@@ -6,17 +6,21 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.spring.mvc.domain.User;
 import org.spring.mvc.service.DBException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateOptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import java.util.List;
 
 @Transactional
-@Repository("userDao")
-public class UserDaoImpl implements UserDao {
+@Repository("userDaoSession")
+public class UserDaoSessionFactoryImpl implements UserDao {
+
 
     private SessionFactory sessionFactory;
     private Session session;

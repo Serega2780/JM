@@ -32,12 +32,7 @@ public class SpringMvcController {
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ModelAndView addUser(@RequestParam("name") String name, @RequestParam("password") String password,
-                                @RequestParam("role") String role, @RequestParam("email") String email,
-                                @RequestParam("country") String country) {
-
-
-        User user = new User(name, password, role, email, country);
+    public ModelAndView addUser(@ModelAttribute User user) {
         userService.createUser(user);
         return new ModelAndView("redirect:/users");
 
@@ -52,11 +47,7 @@ public class SpringMvcController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelAndView editUser(@RequestParam("id") int id, @RequestParam("name") String name,
-                                 @RequestParam("password") String password,
-                                 @RequestParam("role") String role, @RequestParam("email") String email,
-                                 @RequestParam("country") String country) {
-        User user = new User(id, name, password, role, email, country);
+    public ModelAndView editUser(@ModelAttribute User user) {
         userService.updateUser(user);
         return new ModelAndView("redirect:/users");
 
