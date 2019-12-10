@@ -1,5 +1,6 @@
 package org.spring.mvc.config;
 
+import org.spring.mvc.security.CustomAccessDeniedHandler;
 import org.spring.mvc.security.CustomSimpleUrlAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.annotation.Resource;
@@ -52,12 +54,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomSimpleUrlAuthenticationSuccessHandler();
     }
 
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
                 .csrf().disable();
 
+        http.authorizeRequests()
+                .antMatchers("/")
+                .not()
+                .authenticated()
+                ;
 
         // For ADMIN only.
         http.authorizeRequests()
@@ -76,6 +89,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .and()
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler())
+                .and()
                 .formLogin()//
                 .usernameParameter("login")//
                 .passwordParameter("password")
@@ -83,7 +99,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/perform_login")
                 .successHandler(customAuthenticationSuccessHandler())
                 .failureUrl("/")
-                .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/perform_logout")
@@ -92,27 +107,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
         ;
 
-//        http.authorizeRequests()
-//                .antMatchers("/")
-//                .permitAll()
-//                .antMatchers("/**")
-//                .hasAnyRole("ADMIN", "USER")
-//                .and()
-//                .formLogin()
-//                .usernameParameter("login")
-//                .passwordParameter("password")
-//                .loginPage("/")
-//                .loginProcessingUrl("/perform_login")
-//                .defaultSuccessUrl("/users")
-//                .failureUrl("/perform_login?error=true")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/perform_login?logout=true")
-//                .invalidateHttpSession(true)
-//                .permitAll()
-//                .and()
-//                .csrf()
-//                .disable();
     }
 }
