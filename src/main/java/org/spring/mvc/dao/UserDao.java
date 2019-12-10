@@ -15,7 +15,9 @@ public interface UserDao {
 
     List<User> selectNotAdmins() throws DBException;
 
-    User selectUserByRole(String name, String password) throws DBException;
+    List<String> selectCountries() throws DBException;
+
+    User selectUserByName(String name) throws DBException;
 
     boolean deleteUser(int id) throws DBException;
 

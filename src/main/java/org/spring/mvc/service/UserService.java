@@ -14,7 +14,9 @@ public interface UserService {
 
     List<User> selectNotAdmins();
 
-    User selectUserByRole(String name, String password);
+    String[] selectCountries();
+
+    User selectUserByName(String name);
 
     boolean deleteUser(int id);
 

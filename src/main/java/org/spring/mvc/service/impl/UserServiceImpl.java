@@ -1,8 +1,10 @@
-package org.spring.mvc.service;
+package org.spring.mvc.service.impl;
 
 import org.spring.mvc.dao.UserDao;
 import org.spring.mvc.dao.UserDaoFactory;
 import org.spring.mvc.domain.User;
+import org.spring.mvc.service.DBException;
+import org.spring.mvc.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -61,13 +63,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User selectUserByRole(String name, String password) {
+    public User selectUserByName(String name) {
         try {
-            return userDao.selectUserByRole(name, password);
+            return userDao.selectUserByName(name);
         } catch (DBException e) {
             logger.severe(e.getMessage());
         }
         return null;
+    }
+
+    public String[] selectCountries() {
+
+        return new String[]{
+                "Russia", "Portugal", "USA", "France", "Belgium", "Spain"
+        };
     }
 
     @Override

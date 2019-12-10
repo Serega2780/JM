@@ -23,7 +23,7 @@
 </center>
 <div align="center">
     <c:if test="${user != null}">
-    <form action="update" method="post">
+    <form action="update" method="put">
         </c:if>
         <c:if test="${user == null}">
         <form action="insert" method="post">
@@ -62,9 +62,27 @@
                 <tr>
                     <th>User Role:</th>
                     <td>
-                        <input type="text" name="role" size="45"
-                               value="<c:out value="${user.role}" />"
-                        />
+                        <select id="rolesList"
+                                name="role"
+                                multiple="multiple"
+                        >
+                            <c:forEach items="${user.getAuthorities()}" var="authority">
+                                <option
+                                        selected="selected"
+                                        style="font-weight: bold;"
+                                        value="<c:out value="${authority.role}" />">
+                                    <c:out value="${authority.role}"/>
+                                </option>
+                            </c:forEach>
+                            <option value=""> --</option>
+                            <c:forEach items="${roles}" var="role">
+                                <option
+                                        value="<c:out value="${role.role}" />"
+                                >
+                                    <c:out value="${role.role}"/>
+                                </option>
+                            </c:forEach>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -77,10 +95,28 @@
                 </tr>
                 <tr>
                     <th>Country:</th>
+
                     <td>
-                        <input type="text" name="country" size="15"
-                               value="<c:out value="${user.country}" />"
-                        />
+                        <select id="countriesList"
+                                name="country"
+                        >
+                            <option
+                                    selected="selected"
+                                    style="font-weight: bold;"
+                                    value="<c:out value="${user.country}"/>"
+                            >
+                                <c:out value="${user.country}"/>
+                            </option>
+                            <option value=""> --</option>
+                            <c:forEach items="${countries}" var="country">
+                                <option
+                                        value="<c:out value="${country}"/>"
+                                >
+                                    <c:out value="${country}"/>
+                                </option>
+                            </c:forEach>
+
+                        </select>
                     </td>
                 </tr>
                 <tr>

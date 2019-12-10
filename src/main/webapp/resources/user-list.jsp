@@ -36,7 +36,12 @@
             <tr>
                 <td>${user.id}</td>
                 <td>${user.name}</td>
-                <td>${user.role}</td>
+                <td>
+				    <c:forEach items="${user.getAuthorities()}" var="role">
+					    <c:out value="${role.getRole()}"/><br>
+                    </c:forEach>
+                </td>
+
                 <td>${user.email}</td>
                 <td>${user.country}</td>
                 <td>

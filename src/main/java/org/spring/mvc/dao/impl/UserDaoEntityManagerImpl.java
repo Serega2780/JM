@@ -1,6 +1,7 @@
-package org.spring.mvc.dao;
+package org.spring.mvc.dao.impl;
 
 import org.hibernate.HibernateException;
+import org.spring.mvc.dao.UserDao;
 import org.spring.mvc.domain.User;
 import org.spring.mvc.service.DBException;
 import org.springframework.stereotype.Repository;
@@ -18,7 +19,7 @@ public class UserDaoEntityManagerImpl implements UserDao {
 
     @Override
     public void insertUser(User user) throws DBException {
-       try {
+        try {
             entityManager.persist(user);
             entityManager.flush();
         } catch (HibernateException e) {
@@ -45,7 +46,7 @@ public class UserDaoEntityManagerImpl implements UserDao {
         try {
             allUsers = entityManager.createQuery("FROM User").getResultList();
         } catch (HibernateException | NoResultException | ClassCastException e) {
-            throw new DBException("An error during select user by id operation...");
+            throw new DBException("An error during select all user operation...");
         }
         return allUsers;
     }
@@ -66,17 +67,29 @@ public class UserDaoEntityManagerImpl implements UserDao {
 
     @Override
     @Transactional(readOnly = true)
-    public User selectUserByRole(String name, String password) throws DBException {
+    public User selectUserByName(String name) throws DBException {
         User user;
-        Query query = entityManager.createQuery("FROM User WHERE name = :name AND password = :password");
+        Query query = entityManager.createQuery("FROM User WHERE name = :name");
         query.setParameter("name", name);
-        query.setParameter("password", password);
         try {
             user = (User) query.getSingleResult();
         } catch (HibernateException e) {
-            throw new DBException("An error during select user by role operation...");
+            throw new DBException("An error during select user by name operation...");
         }
         return user;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<String> selectCountries() throws DBException {
+        List<String> countries;
+        Query query = entityManager.createQuery("SELECT country FROM User");
+        try {
+            countries = query.getResultList();
+        } catch (HibernateException e) {
+            throw new DBException("An error during select user by name operation...");
+        }
+        return countries;
     }
 
     @Override

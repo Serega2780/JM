@@ -1,19 +1,19 @@
-package org.spring.mvc.dao;
+package org.spring.mvc.dao.impl;
+
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.spring.mvc.dao.UserDao;
 import org.spring.mvc.domain.User;
 import org.spring.mvc.service.DBException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.HibernateOptimisticLockingFailureException;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+
 
 import java.util.List;
 
@@ -94,19 +94,30 @@ public class UserDaoSessionFactoryImpl implements UserDao {
 
     @Override
     @Transactional(readOnly = true)
-    public User selectUserByRole(String name, String password) throws DBException {
+    public List<String> selectCountries() throws DBException {
+        session = sessionFactory.getCurrentSession();
+        Query<String> query = session.createQuery("SELECT country FROM User");
+        List<String> countries;
+        try {
+            countries = query.getResultList();
+        } catch (HibernateException e) {
+            throw new DBException("An error during select countries operation...");
+        }
+        return countries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User selectUserByName(String name) throws DBException {
         session = sessionFactory.getCurrentSession();
         User user = null;
-        Query query = session.createQuery("FROM User WHERE name = :name AND password = :password");
+        Query<User> query = session.createQuery("FROM User WHERE name = :name");
         query.setParameter("name", name);
-        query.setParameter("password", password);
         try {
-            if (!query.list().isEmpty()) {
-                user = (User) query.list().get(0);
-            }
-
-        } catch (HibernateException e) {
-            throw new DBException("An error during select by role operation...");
+            user = query.getSingleResult();
+        } catch (
+                HibernateException e) {
+            throw new DBException("An error during select by name operation...");
         }
         return user;
     }
