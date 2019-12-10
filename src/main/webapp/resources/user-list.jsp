@@ -15,9 +15,9 @@
 <center>
     <h1>User Management</h1>
     <h2>
-        <a href="new">Add New User</a>
+        <a href="/admin/new">Add New User</a>
         &nbsp;&nbsp;&nbsp;
-        <a href="list">List All Users</a>
+        <a href="/admin/list">List All Users</a>
 
     </h2>
 </center>
@@ -45,9 +45,9 @@
                 <td>${user.email}</td>
                 <td>${user.country}</td>
                 <td>
-                    <a href="edit?id=<c:out value="${user.id}" />">Edit</a>
+                    <a href="/admin/edit?id=<c:out value="${user.id}" />">Edit</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="delete?id=<c:out value="${user.id}" />">Delete</a>
+                    <a href="/admin/delete?id=<c:out value="${user.id}" />">Delete</a>
                 </td>
             </tr>
         </c:forEach>

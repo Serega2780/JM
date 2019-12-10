@@ -105,6 +105,10 @@ public class User implements UserDetails {
         this.authorities = authorities;
     }
 
+    public void setAuthority(Role role) {
+        authorities.add(role);
+    }
+
     public String getPassword() {
         return password;
     }
@@ -154,4 +158,4 @@ public class User implements UserDetails {
         this.country = country;
     }
 
-   }
+}

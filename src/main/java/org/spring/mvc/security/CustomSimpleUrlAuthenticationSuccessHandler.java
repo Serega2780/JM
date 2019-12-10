@@ -20,10 +20,10 @@ public class CustomSimpleUrlAuthenticationSuccessHandler implements Authenticati
         for (Role role : roles) {
             if (role.getAuthority().contains("ADMIN")) {
                 //equals("ROLE_ADMIN")
-                httpServletResponse.sendRedirect("/admin/list");
+                httpServletResponse.sendRedirect("admin/list");
                 return;
             }
         }
-        httpServletResponse.sendRedirect("/user");
+        httpServletResponse.sendRedirect("/users");
     }
 }

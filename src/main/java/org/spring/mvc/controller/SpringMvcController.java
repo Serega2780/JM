@@ -27,27 +27,30 @@ public class SpringMvcController {
         this.roleService = roleService;
     }
 
-    @RequestMapping(value = {"/users", "/list"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/users", "admin/list", "/list"}, method = RequestMethod.GET)
     public String listUser(Model model) {
         model.addAttribute("listUser", userService.selectAllUsers());
         return "user-list";
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/new", method = RequestMethod.GET)
     public String addForm(Model model) {
         model.addAttribute("countries", userService.selectCountries());
         model.addAttribute("roles", roleService.selectAllRoles());
         return "user-form";
     }
 
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ModelAndView addUser(@ModelAttribute User user) {
+    @RequestMapping(value = "/admin/insert", method = RequestMethod.POST)
+    public ModelAndView addUser(@ModelAttribute User user, @RequestParam("role") String[] roles) {
+        for (String role : roles) {
+            user.setAuthority(roleService.selectRoleByName(role));
+        }
         userService.createUser(user);
         return new ModelAndView("redirect:/users");
 
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/edit", method = RequestMethod.GET)
     public String showEditForm(@RequestParam("id") int id, Model model) {
         User user = userService.selectUser(id);
         model.addAttribute("user", user);
@@ -56,13 +59,16 @@ public class SpringMvcController {
         return "user-form";
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public ModelAndView editUser(@ModelAttribute User user) {
+    @RequestMapping(value = "/admin/update", method = RequestMethod.POST)
+    public ModelAndView editUser(@ModelAttribute User user, @RequestParam("role") String[] roles) {
+        for (String role : roles) {
+            user.setAuthority(roleService.selectRoleByName(role));
+        }
         userService.updateUser(user);
         return new ModelAndView("redirect:/users");
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/delete", method = RequestMethod.GET)
     public ModelAndView deleteUser(@RequestParam("id") int id) {
         userService.deleteUser(id);
         return new ModelAndView("redirect:/users");

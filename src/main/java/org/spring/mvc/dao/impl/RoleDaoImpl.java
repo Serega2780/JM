@@ -8,10 +8,7 @@ import org.spring.mvc.service.DBException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.util.List;
 
 @Transactional
@@ -44,11 +41,15 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     @Transactional(readOnly = true)
     public Role selectRoleByName(String name) throws DBException {
+        Role role;
+        Query query = entityManager.createQuery("FROM Role WHERE role = :name");
+        query.setParameter("name", name);
         try {
-            return entityManager.find(Role.class, name);
-        } catch (HibernateException | NoResultException | ClassCastException e) {
-            throw new DBException("An error during select by name roles operation...");
+            role = (Role) query.getSingleResult();
+        } catch (HibernateException e) {
+            throw new DBException("An error during select role by name operation...");
         }
+        return role;
     }
 
     @Override

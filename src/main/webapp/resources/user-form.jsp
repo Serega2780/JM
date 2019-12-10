@@ -15,18 +15,18 @@
 <center>
     <h1>User Management</h1>
     <h2>
-        <a href="new">Add New User</a>
+        <a href="/admin/new">Add New User</a>
         &nbsp;&nbsp;&nbsp;
-        <a href="list">List All Users</a>
+        <a href="/list">List All Users</a>
 
     </h2>
 </center>
 <div align="center">
     <c:if test="${user != null}">
-    <form action="update" method="put">
+    <form action="/admin/update" method="post">
         </c:if>
         <c:if test="${user == null}">
-        <form action="insert" method="post">
+        <form action="/admin/insert" method="post">
             </c:if>
             <table border="1" cellpadding="5">
                 <caption>
