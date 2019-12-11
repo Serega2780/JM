@@ -70,14 +70,14 @@
                                 <option
                                         selected="selected"
                                         style="font-weight: bold;"
-                                        value="<c:out value="${authority.role}" />">
+                                        value="<c:out value="${authority.id}" />">
                                     <c:out value="${authority.role}"/>
                                 </option>
                             </c:forEach>
                             <option value=""> --</option>
                             <c:forEach items="${roles}" var="role">
                                 <option
-                                        value="<c:out value="${role.role}" />"
+                                        value="<c:out value="${role.id}" />"
                                 >
                                     <c:out value="${role.role}"/>
                                 </option>

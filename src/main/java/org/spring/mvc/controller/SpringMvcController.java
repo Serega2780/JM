@@ -41,9 +41,9 @@ public class SpringMvcController {
     }
 
     @RequestMapping(value = "/admin/insert", method = RequestMethod.POST)
-    public ModelAndView addUser(@ModelAttribute User user, @RequestParam("role") String[] roles) {
-        for (String role : roles) {
-            user.setAuthority(roleService.selectRoleByName(role));
+    public ModelAndView addUser(@ModelAttribute User user, @RequestParam("role") Integer[] roleIds) {
+        for (Integer id : roleIds) {
+            user.setAuthority(roleService.selectRoleById(id));
         }
         userService.createUser(user);
         return new ModelAndView("redirect:/users");
@@ -60,9 +60,9 @@ public class SpringMvcController {
     }
 
     @RequestMapping(value = "/admin/update", method = RequestMethod.POST)
-    public ModelAndView editUser(@ModelAttribute User user, @RequestParam("role") String[] roles) {
-        for (String role : roles) {
-            user.setAuthority(roleService.selectRoleByName(role));
+    public ModelAndView editUser(@ModelAttribute User user, @RequestParam("role") Integer[] roleIds) {
+        for (Integer id : roleIds) {
+            user.setAuthority(roleService.selectRoleById(id));
         }
         userService.updateUser(user);
         return new ModelAndView("redirect:/users");
