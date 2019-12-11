@@ -1,7 +1,6 @@
 package org.spring.mvc.service.impl;
 
 import org.spring.mvc.dao.UserDao;
-import org.spring.mvc.dao.UserDaoFactory;
 import org.spring.mvc.domain.User;
 import org.spring.mvc.service.DBException;
 import org.spring.mvc.service.UserService;
@@ -18,9 +17,9 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
 
-    @Resource(name = "userDaoFactory")
-    public void setUserDao(UserDaoFactory userDaoFactory) {
-        this.userDao = userDaoFactory.getUserDao();
+    @Resource(name = "userDaoEntity")
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override

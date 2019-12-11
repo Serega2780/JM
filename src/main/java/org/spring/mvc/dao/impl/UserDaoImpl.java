@@ -12,7 +12,7 @@ import java.util.List;
 
 @Transactional
 @Repository("userDaoEntity")
-public class UserDaoEntityManagerImpl implements UserDao {
+public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -94,15 +94,12 @@ public class UserDaoEntityManagerImpl implements UserDao {
 
     @Override
     public boolean deleteUser(int id) throws DBException {
-        boolean rowDeleted;
-        Query query = entityManager.createQuery("DELETE FROM User WHERE id = :id");
-        query.setParameter("id", id);
         try {
-            rowDeleted = query.executeUpdate() > 0;
-        } catch (HibernateException e) {
-            throw new DBException("An error during delete operation...");
+            entityManager.remove(selectUser(id));
+            return true;
+        } catch (HibernateException | NoResultException | ClassCastException e) {
+            throw new DBException("An error during delete  roles operation...");
         }
-        return rowDeleted;
     }
 
     @Override
